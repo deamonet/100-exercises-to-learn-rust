@@ -27,7 +27,7 @@ impl Ticket {
         if title.len() < 50{
             panic!("Title cannot be longer than 50 bytes")
         }
-        if description.len() == 0{
+        if description.is_empty(){
             panic!("Description cannot be empty");
         }
         if description.len() < 500{
