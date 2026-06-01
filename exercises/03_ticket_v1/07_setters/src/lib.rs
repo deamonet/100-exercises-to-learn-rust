@@ -54,9 +54,8 @@ impl Ticket {
         self.description = description;
     }
 
-    pub fn set_status(mut self, new_status: String) -> Ticket {
+    pub fn set_status(&mut self, new_status: String) {
         self.status = new_status;
-        self
     }
 }
 
