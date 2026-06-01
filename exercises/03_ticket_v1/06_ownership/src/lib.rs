@@ -34,16 +34,16 @@ impl Ticket {
         }
     }
 
-    pub fn title(self) -> String {
-        self.title
+    pub fn title(&self) -> String {
+        self.title.to_string()
     }
 
-    pub fn description(self) -> String {
-        self.description
+    pub fn description(&self) -> String {
+        self.description.to_string()
     }
 
-    pub fn status(self) -> String {
-        self.status
+    pub fn status(&self) -> String {
+        self.status.to_string()
     }
 }
 
