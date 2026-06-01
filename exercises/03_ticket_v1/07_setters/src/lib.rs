@@ -45,6 +45,19 @@ impl Ticket {
     pub fn status(&self) -> &String {
         &self.status
     }
+
+    pub fn set_title(&mut self, title: String){
+        self.title = title;
+    }
+
+    pub fn set_description(&mut self, description: String){
+        self.description = description;
+    }
+
+    pub fn set_status(mut self, new_status: String) -> Ticket {
+        self.status = new_status;
+        self
+    }
 }
 
 #[cfg(test)]
