@@ -30,6 +30,18 @@ pub mod ticket {
             }
         }
 
+        pub(crate) fn title(&self) -> String {
+           self.title.to_string()
+        }
+
+        pub(crate) fn description(&self) -> String {
+            self.description.to_string()
+        }
+
+        pub(crate) fn status(&self) -> String {
+            self.status.to_string()
+        }
+
         // TODO: Add three public methods to the `Ticket` struct:
         //  - `title` that returns the `title` field.
         //  - `description` that returns the `description` field.
