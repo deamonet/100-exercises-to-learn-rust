@@ -1,3 +1,5 @@
+use std::slice::Iter;
+use std::vec::IntoIter;
 use ticket_fields::{TicketDescription, TicketTitle};
 
 // TODO: Implement the `IntoIterator` trait for `&TicketStore` so that the test compiles and passes.
@@ -11,6 +13,15 @@ pub struct Ticket {
     pub title: TicketTitle,
     pub description: TicketDescription,
     pub status: Status,
+}
+
+impl<'a> IntoIterator for &'a TicketStore {
+    type Item = &'a Ticket;
+    type IntoIter = Iter<'a, Ticket>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.tickets.iter()
+    }
 }
 
 #[derive(Clone, Debug, Copy, PartialEq)]
@@ -31,10 +42,12 @@ impl TicketStore {
         self.tickets.push(ticket);
     }
 
-    pub fn iter(&self) -> std::slice::Iter<Ticket> {
+    pub fn iter(&self) -> Iter<Ticket> {
         self.tickets.iter()
     }
 }
+
+
 
 #[cfg(test)]
 mod tests {
