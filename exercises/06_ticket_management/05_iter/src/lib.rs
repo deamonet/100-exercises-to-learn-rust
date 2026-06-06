@@ -35,14 +35,9 @@ impl TicketStore {
     pub fn add_ticket(&mut self, ticket: Ticket) {
         self.tickets.push(ticket);
     }
-}
 
-impl IntoIterator for &TicketStore {
-    type Item = Ticket;
-    type IntoIter = std::vec::IntoIter<Ticket>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        self.tickets.into_iter()
+    pub fn iter(&self) -> std::slice::Iter<Ticket> {
+        self.tickets.iter()
     }
 }
 
