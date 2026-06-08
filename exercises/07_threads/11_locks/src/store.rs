@@ -28,13 +28,17 @@ impl TicketStore {
             description: ticket.description,
             status: Status::ToDo,
         };
-        todo!();
+        let arc = Arc::new(Mutex::new(ticket));
+        self.tickets.insert(id, arc);
         id
     }
 
     // The `get` method should return a handle to the ticket
     // which allows the caller to either read or modify the ticket.
-    pub fn get(&self, id: TicketId) -> Option<todo!()> {
-        todo!()
+    pub fn get(&self, id: TicketId) -> Option<Arc<Mutex<Ticket>>> {
+        match self.tickets.get(&id) {
+            Some(arc) => Some(arc.clone()),
+            None => None,
+        }
     }
 }
