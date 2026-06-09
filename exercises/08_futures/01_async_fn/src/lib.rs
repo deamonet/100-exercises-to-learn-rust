@@ -1,3 +1,5 @@
+use std::fs::read;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 
 // TODO: write an echo server that accepts incoming TCP connections and
@@ -11,7 +13,14 @@ use tokio::net::TcpListener;
 // - `tokio::net::TcpStream::split` to obtain a reader and a writer from the socket
 // - `tokio::io::copy` to copy data from the reader to the writer
 pub async fn echo(listener: TcpListener) -> Result<(), anyhow::Error> {
-    todo!()
+    println!("{}", listener.local_addr().unwrap());
+    loop {
+        let (mut tcp, addr) = listener.accept().await?;
+        let (mut reader, mut writer) = tcp.split();
+        tokio::io::copy(&mut reader, &mut writer)
+            .await
+            .expect("TODO: panic message");
+    }
 }
 
 #[cfg(test)]
