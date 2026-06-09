@@ -1,10 +1,26 @@
+use std::ptr::with_exposed_provenance;
 use tokio::net::TcpListener;
 
 // TODO: write an echo server that accepts TCP connections on two listeners, concurrently.
 //  Multiple connections (on the same listeners) should be processed concurrently.
 //  The received data should be echoed back to the client.
 pub async fn echoes(first: TcpListener, second: TcpListener) -> Result<(), anyhow::Error> {
-    todo!()
+    let handle1 = tokio::spawn(echo(first));
+    let handle2 = tokio::spawn(echo(second));
+    let _ = handle1.await;
+    let _ = handle2.await;
+    Ok(())
+}
+
+async fn echo(tcp_listener: TcpListener) -> Result<(), anyhow::Error> {
+    loop {
+        let (mut socket, addr) = tcp_listener.accept().await?;
+        println!("{}", addr);
+        tokio::spawn(async move {
+            let (mut reader, mut writer) = socket.split();
+            let _ = tokio::io::copy(&mut reader, &mut writer).await;
+        });
+    }
 }
 
 #[cfg(test)]
