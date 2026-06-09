@@ -1,13 +1,13 @@
-use std::sync::{Arc, RwLock};
+use std::sync::{Arc, Mutex, RwLock};
 use std::thread::spawn;
 
 use ticket_fields::test_helpers::{ticket_description, ticket_title};
-use without_channels::data::TicketDraft;
+use without_channels::data::{Ticket, TicketDraft};
 use without_channels::store::TicketStore;
 
 #[test]
 fn works() {
-    let store = todo!();
+    let store = Arc::new(RwLock::new(TicketStore::new()));
 
     let store1 = store.clone();
     let client1 = spawn(move || {
