@@ -9,6 +9,7 @@ pub async fn echo(listener: TcpListener) -> Result<(), anyhow::Error> {
     loop {
         let (socket, addr) = listener.accept().await?;
         println!("{}", addr);
+        // client_handle(socket);
         tokio::task::spawn_blocking(move || client_handle(socket));
     }
 }
@@ -41,12 +42,8 @@ mod tests {
         let (listener, addr) = bind_random().await;
         tokio::spawn(echo(listener));
 
-        let requests = vec![
-            "hello here we go with a long message",
-            "world",
-            "foo",
-            "bar",
-        ];
+        let large_data = vec![b'A'; 10 * 1024 * 1024]; // 10MB
+        let requests = vec![large_data, vec![1], vec![1]];
         let mut join_set = JoinSet::new();
 
         for request in requests {
@@ -55,14 +52,14 @@ mod tests {
                 let (mut reader, mut writer) = socket.split();
 
                 // Send the request
-                writer.write_all(request.as_bytes()).await.unwrap();
+                writer.write_all(request.as_slice()).await.unwrap();
                 // Close the write side of the socket
                 writer.shutdown().await.unwrap();
 
                 // Read the response
                 let mut buf = Vec::with_capacity(request.len());
                 reader.read_to_end(&mut buf).await.unwrap();
-                assert_eq!(&buf, request.as_bytes());
+                assert_eq!(&buf, request.as_slice());
             });
         }
 
