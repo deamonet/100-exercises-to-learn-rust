@@ -1,0 +1,26 @@
+GET http://localhost:3000/
+
+###
+GET http://localhost:3000/ticket/0
+
+###
+POST http://localhost:3000/ticket
+Content-Type: application/json
+
+{
+  "title": "{{$random.address.cityName}}",
+  "description": "{{$random.company.name}}"
+}
+
+###
+PATCH http://localhost:3000/ticket
+Content-Type: application/json
+
+{
+  "id": 0,
+  "title": "{{$random.superhero.name}}",
+  "description": "{{$random.superhero.descriptor}}"
+}
+
+###
+GET http://localhost:3000/ticket/0
